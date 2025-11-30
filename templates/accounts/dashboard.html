@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Личный кабинет</h1>
+
+<div class="profile-card">
+    <p><strong>Пользователь:</strong> {{ request.user.username }}</p>
+    <p><strong>Всего заявок:</strong> {{ applications|length }}</p>
+</div>
+
+<h2>Мои заявки</h2>
+
+{% if applications %}
+    <table>
+        <tr>
+            <th>Конкурс</th>
+            <th>Статус заявки</th>
+            <th>Дата подачи</th>
+            <th>Сертификат</th>
+        </tr>
+        {% for app in applications %}
+            <tr>
+                <td>{{ app.competition.title }}</td>
+                <td>{{ app.get_status_display }}</td>
+                <td>{{ app.created_at }}</td>
+                <td>
+                    {% if app.result and app.result.published %}
+                        <a href="{% url 'competitions:download_certificate' app.pk %}" class="btn">
+                            Скачать
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>У вас пока нет поданных заявок.</p>
+{% endif %}
+{% endblock %}
