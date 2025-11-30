@@ -1,34 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Каталог конкурсов</h1>
-<p class="muted">Здесь отображаются опубликованные конкурсы, доступные для участия.</p>
+<div class="hero">
+    <h1 class="hero-title">Каталог конкурсов</h1>
+    <p class="hero-subtitle">
+        Здесь отображаются опубликованные конкурсы для школ, колледжей и вузов. 
+        Выберите конкурс, изучите описание и подайте заявку онлайн.
+    </p>
+</div>
 
-{% if competitions %}
-    <div class="competition-list">
-        {% for c in competitions %}
-            <div class="competition-card">
-                <h2>
-                    <a href="{% url 'competitions:competition_detail' c.pk %}">
-                        {{ c.title }}
+<div class="page-card">
+    {% if competitions %}
+        <div class="competition-list">
+            {% for c in competitions %}
+                <div class="competition-card">
+                    <h2>
+                        <a href="{% url 'competitions:competition_detail' c.pk %}">
+                            {{ c.title }}
+                        </a>
+                    </h2>
+                    <p><strong>Сроки проведения:</strong> {{ c.start_date }} — {{ c.end_date }}</p>
+                    {% if c.category %}
+                        <p><strong>Категория:</strong> {{ c.category }}</p>
+                    {% endif %}
+                    <p>
+                        <span class="status-badge">
+                            ● {{ c.get_status_display }}
+                        </span>
+                    </p>
+                    <a href="{% url 'competitions:competition_detail' c.pk %}" class="btn">
+                        Подробнее о конкурсе
                     </a>
-                </h2>
-                <p><strong>Сроки проведения:</strong> {{ c.start_date }} — {{ c.end_date }}</p>
-                {% if c.category %}
-                    <p><strong>Категория:</strong> {{ c.category }}</p>
-                {% endif %}
-                <p>
-                    <span class="status-badge">
-                        {{ c.get_status_display }}
-                    </span>
-                </p>
-                <a href="{% url 'competitions:competition_detail' c.pk %}" class="btn">
-                    Подробнее о конкурсе
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <p>Сейчас нет опубликованных конкурсов.</p>
-{% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Сейчас нет опубликованных конкурсов.</p>
+    {% endif %}
+</div>
 {% endblock %}

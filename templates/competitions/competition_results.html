@@ -1,41 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Результаты конкурса: {{ competition.title }}</h1>
-
-{% if results %}
-    <p class="muted">
-        В таблице показаны участники с опубликованными результатами. 
-        Ваша строка подсвечивается, если вы участвовали в конкурсе.
+<div class="hero">
+    <h1 class="hero-title">Результаты конкурса: {{ competition.title }}</h1>
+    <p class="hero-subtitle">
+        Ниже представлены участники с опубликованными результатами. 
+        Ваша строка подсвечивается, сертификат доступен только автору заявки.
     </p>
+</div>
 
-    <table>
-        <tr>
-            <th>Место</th>
-            <th>Участник</th>
-            <th>Учреждение</th>
-            <th>Баллы</th>
-            <th>Комментарий жюри</th>
-            <th>Сертификат</th>
-        </tr>
-        {% for r in results %}
-            <tr class="{% if request.user.is_authenticated and request.user == r.application.user %}current-user{% endif %}">
-                <td>{% if r.place %}{{ r.place }}{% else %}-{% endif %}</td>
-                <td>{{ r.application.full_name }}</td>
-                <td>{{ r.application.school }}</td>
-                <td>{% if r.score is not None %}{{ r.score }}{% else %}-{% endif %}</td>
-                <td>{{ r.comment }}</td>
-                <td>
-                    {% if request.user.is_authenticated and request.user == r.application.user %}
-                        <a href="{% url 'competitions:download_certificate' r.application.pk %}" class="btn">
-                            Скачать
-                        </a>
-                    {% endif %}
-                </td>
+<div class="page-card">
+    {% if results %}
+        <table>
+            <tr>
+                <th>Место</th>
+                <th>Участник</th>
+                <th>Учреждение</th>
+                <th>Баллы</th>
+                <th>Комментарий жюри</th>
+                <th>Сертификат</th>
             </tr>
-        {% endfor %}
-    </table>
-{% else %}
-    <p>Результаты пока не опубликованы.</p>
-{% endif %}
+            {% for r in results %}
+                <tr class="{% if request.user.is_authenticated and request.user == r.application.user %}current-user{% endif %}">
+                    <td>{% if r.place %}{{ r.place }}{% else %}-{% endif %}</td>
+                    <td>{{ r.application.full_name }}</td>
+                    <td>{{ r.application.school }}</td>
+                    <td>{% if r.score is not None %}{{ r.score }}{% else %}-{% endif %}</td>
+                    <td>{{ r.comment }}</td>
+                    <td>
+                        {% if request.user.is_authenticated and request.user == r.application.user %}
+                            <a href="{% url 'competitions:download_certificate' r.application.pk %}" class="btn">
+                                Скачать
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Результаты пока не опубликованы.</p>
+    {% endif %}
+</div>
 {% endblock %}

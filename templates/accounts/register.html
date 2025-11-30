@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="auth-box">
-    <h1>Регистрация</h1>
+<div class="hero">
+    <h1 class="hero-title">Регистрация</h1>
+    <p class="hero-subtitle">
+        Создайте аккаунт участника, чтобы подавать заявки и получать сертификаты.
+    </p>
+</div>
 
+<div class="page-card auth-box">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

@@ -1,43 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ competition.title }}</h1>
-
-<p><strong>Период проведения:</strong> {{ competition.start_date }} — {{ competition.end_date }}</p>
-
-{% if competition.category %}
-    <p><strong>Категория:</strong> {{ competition.category }}</p>
-{% endif %}
-
-{% if competition.description %}
-    <h3>Описание конкурса</h3>
-    <p>{{ competition.description|linebreaks }}</p>
-{% endif %}
-
-{% if competition.rules_file %}
-    <p>
-        <a href="{{ competition.rules_file.url }}" class="btn-secondary" target="_blank">
-            Скачать положение (PDF)
-        </a>
+<div class="hero">
+    <h1 class="hero-title">{{ competition.title }}</h1>
+    <p class="hero-subtitle">
+        Информация о конкурсе, сроки проведения, категория и доступ к положению.
     </p>
-{% endif %}
+</div>
 
-<hr class="divider">
+<div class="page-card">
+    <p><strong>Период проведения:</strong> {{ competition.start_date }} — {{ competition.end_date }}</p>
 
-{% if request.user.is_authenticated %}
-    <p>
-        <a href="{% url 'competitions:application_create' competition.pk %}" class="btn">
-            Подать заявку
-        </a>
-        <a href="{% url 'competitions:competition_results' competition.pk %}" class="btn-secondary">
-            Смотреть результаты
-        </a>
-    </p>
-{% else %}
-    <p>
-        Чтобы подать заявку, пожалуйста,
-        <a href="{% url 'accounts:login' %}">войдите</a> или
-        <a href="{% url 'accounts:register' %}">зарегистрируйтесь</a>.
-    </p>
-{% endif %}
+    {% if competition.category %}
+        <p><strong>Категория:</strong> {{ competition.category }}</p>
+    {% endif %}
+
+    {% if competition.description %}
+        <h3>Описание конкурса</h3>
+        <p>{{ competition.description|linebreaks }}</p>
+    {% endif %}
+
+    {% if competition.rules_file %}
+        <p>
+            <a href="{{ competition.rules_file.url }}" class="btn-secondary" target="_blank">
+                Скачать положение (PDF)
+            </a>
+        </p>
+    {% endif %}
+
+    <hr class="divider">
+
+    {% if request.user.is_authenticated %}
+        <p>
+            <a href="{% url 'competitions:application_create' competition.pk %}" class="btn">
+                Подать заявку
+            </a>
+            <a href="{% url 'competitions:competition_results' competition.pk %}" class="btn-secondary">
+                Смотреть результаты
+            </a>
+        </p>
+    {% else %}
+        <p>
+            Чтобы подать заявку, пожалуйста,
+            <a href="{% url 'accounts:login' %}">войдите</a> или
+            <a href="{% url 'accounts:register' %}">зарегистрируйтесь</a>.
+        </p>
+    {% endif %}
+</div>
 {% endblock %}

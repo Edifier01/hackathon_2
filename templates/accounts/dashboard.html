@@ -1,39 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Личный кабинет</h1>
-
-<div class="profile-card">
-    <p><strong>Пользователь:</strong> {{ request.user.username }}</p>
-    <p><strong>Всего заявок:</strong> {{ applications|length }}</p>
+<div class="hero">
+    <h1 class="hero-title">Личный кабинет</h1>
+    <p class="hero-subtitle">
+        Здесь вы видите свои заявки на конкурсы и можете скачать сертификаты после публикации результатов.
+    </p>
 </div>
 
-<h2>Мои заявки</h2>
+<div class="page-card">
+    <div class="profile-card">
+        <p><strong>Пользователь:</strong> {{ request.user.username }}</p>
+        <p><strong>Всего заявок:</strong> {{ applications|length }}</p>
+    </div>
 
-{% if applications %}
-    <table>
-        <tr>
-            <th>Конкурс</th>
-            <th>Статус заявки</th>
-            <th>Дата подачи</th>
-            <th>Сертификат</th>
-        </tr>
-        {% for app in applications %}
+    <h2>Мои заявки</h2>
+
+    {% if applications %}
+        <table>
             <tr>
-                <td>{{ app.competition.title }}</td>
-                <td>{{ app.get_status_display }}</td>
-                <td>{{ app.created_at }}</td>
-                <td>
-                    {% if app.result and app.result.published %}
-                        <a href="{% url 'competitions:download_certificate' app.pk %}" class="btn">
-                            Скачать
-                        </a>
-                    {% endif %}
-                </td>
+                <th>Конкурс</th>
+                <th>Статус заявки</th>
+                <th>Дата подачи</th>
+                <th>Сертификат</th>
             </tr>
-        {% endfor %}
-    </table>
-{% else %}
-    <p>У вас пока нет поданных заявок.</p>
-{% endif %}
+            {% for app in applications %}
+                <tr>
+                    <td>{{ app.competition.title }}</td>
+                    <td>{{ app.get_status_display }}</td>
+                    <td>{{ app.created_at }}</td>
+                    <td>
+                        {% if app.result and app.result.published %}
+                            <a href="{% url 'competitions:download_certificate' app.pk %}" class="btn">
+                                Скачать
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>У вас пока нет поданных заявок.</p>
+    {% endif %}
+</div>
 {% endblock %}

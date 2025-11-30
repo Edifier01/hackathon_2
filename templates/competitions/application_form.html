@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Подать заявку на конкурс: {{ competition.title }}</h1>
+<div class="hero">
+    <h1 class="hero-title">Подать заявку</h1>
+    <p class="hero-subtitle">
+        Конкурс: {{ competition.title }}. Заполните данные участника и загрузите работу, если это требуется.
+    </p>
+</div>
 
-<p class="muted">
-    Заполните форму ниже. Информация будет использована для связи и формирования сертификата участника.
-</p>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <div style="margin-top: 10px;">
-        <button type="submit">Отправить заявку</button>
-    </div>
-</form>
+<div class="page-card">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="margin-top: 10px;">
+            <button type="submit">Отправить заявку</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
